@@ -1,0 +1,4 @@
+---
+- hosts: wls12c_servers
+  roles:
+    - jdk

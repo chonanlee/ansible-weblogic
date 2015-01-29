@@ -1,0 +1,23 @@
+- name: Check Java Exists
+  stat: path={{java_home}}
+  register: jh
+
+- name: Download Java
+  command: "wget -q -O {{java_archive}} --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' {{download_url}} creates={{java_archive}}"
+  when: not jh.stat.exists
+
+- name: Unpack archive
+  command: "tar -zxf {{java_archive}} -C {{download_folder}} creates={{java_home}}"
+  when: not jh.stat.exists
+
+- name: Fix ownership
+  file: state=directory path={{java_home}} owner=root group=root recurse=yes
+  when: not jh.stat.exists
+
+- name: Make Java available for system
+  alternatives: name=java link=/usr/bin/java path={{java_home}}/bin/java
+  when: not jh.stat.exists
+
+- name: Clean up
+  file: state=absent path={{java_archive}}
+  when: not jh.stat.exists

@@ -1,0 +1,17 @@
+---
+# Variables for JDK
+
+# oracle JDK download url
+download_url: http://download.oracle.com/otn-pub/java/jdk/7u75-b13/jdk-7u75-linux-x64.tar.gz
+
+# target download folder
+download_folder: /opt
+
+# target download archive file
+java_archive: "{{download_folder}}/jdk-7u75-linux-x64.tar.gz"
+
+# java version
+java_version: 1.7
+
+# java home
+java_home: "{{download_folder}}/jdk1.7.0_75"

@@ -1,0 +1,31 @@
+- name: Check Exists
+  stat: path={{java_home}}
+  register: jh
+
+- name: Download Java
+  copy: src={{download_url}} dest={{java_archive}} owner=root group=root mode=0755
+  when: not jh.stat.exists
+
+- name: agree license terms
+  command: "sed -i 's/agreed=/agreed=1/g' {{java_archive}}"
+  when: not jh.stat.exists
+
+- name: agree license terms part 2
+  command: "sed -i 's/more <<\"EOF\"/cat <<\"EOF\"/g' {{java_archive}}"
+  when: not jh.stat.exists
+
+- name: Unpack archive
+  command: '{{java_archive}}'
+  args:
+    chdir: "{{download_folder}}"
+  when: not jh.stat.exists
+
+- name: Clean up
+  file: state=absent path={{java_archive}}
+  when: not jh.stat.exists
+
+- name: Fix ownership
+  file: state=directory path={{java_home}} owner=root group=root recurse=yes
+
+- name: Make Java available for system
+  alternatives: name=java link=/usr/bin/java path={{java_home}}/bin/java

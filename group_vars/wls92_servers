@@ -1,0 +1,18 @@
+---
+# Variables for JDK
+
+# oracle JDK download url (.bin)
+download_url: jdk-1_5_0_22-linux-amd64.bin
+
+# target download folder
+download_folder: /opt
+
+# target download archive file
+java_archive: "{{download_folder}}/jdk-1_5_0_22-linux-amd64.bin"
+
+# java version
+java_version: 1.5
+
+# java home
+java_home: "{{download_folder}}/jdk1.5.0_22"
+
