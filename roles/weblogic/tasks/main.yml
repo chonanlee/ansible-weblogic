@@ -1,0 +1,11 @@
+- name: copy weblogic install file
+  copy: src={{weblogic_install_jar}} path={{ansible_env.HOME}}/{{weblogic_install_jar}} owner=irm group=irm mode=0644
+
+- name: weblogic install file
+  template: src=install.file.j2 dest={{ansible_env.HOME}}/install.file owner=irm group=irm mode=0644
+
+- name: weblogic install loc
+  template: src=oraInst.loc.j2 dest={{ansible_env.HOME}}/oraInst.loc owner=irm group=irm mode=0644
+
+- name: install weblogic
+  command: "{{java_home}}/bin/java -jar {{ansible_env.HOME}}/{{weblogic_install_jar}} -silent -responseFile {{ansible_env.HOME}}/install.file -invPtrLoc {{ansible_env.HOME}}/oraInst.loc -jreLoc {{java_home}}"
