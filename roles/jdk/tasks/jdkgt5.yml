@@ -10,6 +10,10 @@
   command: "tar -zxf {{java_archive}} -C {{download_folder}} creates={{java_home}}"
   when: not jh.stat.exists
 
+- name: Fix JDK random
+  lineinfile: dest={{java_home}}/jre/lib/security/java.security regexp='^securerandom\.source' line="securerandom.source=file:/dev/./urandom"
+  when: not jh.stat.exists
+
 - name: Fix ownership
   file: state=directory path={{java_home}} owner=root group=root recurse=yes
   when: not jh.stat.exists

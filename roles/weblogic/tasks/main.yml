@@ -1,11 +1,28 @@
+- name: Check Weblogic Exists
+  stat: path={{weblogic_home}}
+  register: wls
+
 - name: copy weblogic install file
-  copy: src={{weblogic_install_jar}} path={{ansible_env.HOME}}/{{weblogic_install_jar}} owner=irm group=irm mode=0644
+  copy: src={{weblogic_install_jar}} dest={{ansible_env.HOME}}/{{weblogic_install_jar}} owner=irm group=irm mode=0644
+  when: not wls.stat.exists
 
 - name: weblogic install file
   template: src=install.file.j2 dest={{ansible_env.HOME}}/install.file owner=irm group=irm mode=0644
+  when: not wls.stat.exists
 
 - name: weblogic install loc
   template: src=oraInst.loc.j2 dest={{ansible_env.HOME}}/oraInst.loc owner=irm group=irm mode=0644
+  when: not wls.stat.exists
 
 - name: install weblogic
   command: "{{java_home}}/bin/java -jar {{ansible_env.HOME}}/{{weblogic_install_jar}} -silent -responseFile {{ansible_env.HOME}}/install.file -invPtrLoc {{ansible_env.HOME}}/oraInst.loc -jreLoc {{java_home}}"
+  when: not wls.stat.exists
+
+- name: weblogic domain create file
+  template: src=create_wls_domain.py.j2 dest={{ansible_env.HOME}}/create_wls_domain.py owner=irm group=irm mode=0644
+
+- name: weblogic domain create file 2
+  template: src=create_wls_domain.sh.j2 dest={{ansible_env.HOME}}/create_wls_domain.sh owner=irm group=irm mode=0755
+
+- name: create domain
+  command: ./create_wls_domain.sh chdir={{ansible_env.HOME}}

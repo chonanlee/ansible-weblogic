@@ -17,9 +17,9 @@ java_version: 1.7
 java_home: "{{download_folder}}/jdk1.7.0_75"
 
 # [Variables for Weblogic]
-weblogic_file_path: fmw_12.1.3.0.0_wls.jar
+weblogic_install_jar: fmw_12.1.3.0.0_wls.jar
 
-weblogic_inventory: {{ansible_env.HOME}}/weblogic_inventory
+weblogic_inventory: "{{ansible_env.HOME}}/weblogic_inventory"
 weblogic_group: irm
-weblogic_home: {{ansible_env.HOME}}/weblogic12c
+weblogic_home: "{{ansible_env.HOME}}/weblogic12c"
 

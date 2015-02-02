@@ -1,0 +1,6 @@
+weblogic_console_host: "{{ansible_default_ipv4.address}}"
+weblogic_console_port: 7001
+weblogic_user: weblogic
+weblogic_password: logicweb1
+
+domain_name: irm_domain

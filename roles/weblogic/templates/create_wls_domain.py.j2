@@ -1,0 +1,29 @@
+# Open default domain template
+# ======================
+readTemplate("{{weblogic_home}}/wlserver/common/templates/wls/wls.jar")
+
+# Set the listen address and listen port for the Administration Server
+cd('Servers/AdminServer')
+set('ListenAddress','')
+set('ListenPort', {{weblogic_console_port}})
+ 
+# Enable SSL on the Administration Server and set the SSL listen address and
+# port
+create('AdminServer','SSL')
+cd('SSL/AdminServer')
+set('Enabled', 'True')
+set('ListenPort', 7002)
+
+# Set the domain password for the WebLogic Server administration user
+cd('/')
+cd('Security/base_domain/User/{{weblogic_user}}')
+cmo.setPassword('{{weblogic_password}}')
+
+# If the domain already exists, overwrite the domain
+setOption('OverwriteDomain', 'true')
+
+# write the domain and close the templates
+writeDomain('{{weblogic_home}}/user_projects/domains/{{domain_name}}')
+closeTemplate()
+
+exit()
