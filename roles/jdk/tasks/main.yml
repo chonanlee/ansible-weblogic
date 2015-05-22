@@ -14,4 +14,4 @@
   lineinfile: dest={{ansible_env.HOME}}/.bash_profile regexp='^# JAVA_HOME' insertbefore='^JAVA_HOME' line='# JAVA_HOME (managed by ansible)'
 
 - name: export JAVA_HOME
-  lineinfile: dest={{ansible_env.HOME}}/.bash_profile regexp='^export JAVA_HOME' insertafter='^JAVA_HOME' line='export JAVA_HOME'
+  lineinfile: dest={{ansible_env.HOME}}/.bash_profile regexp='^export JAVA_HOME' insertafter='^JAVA_HOME' line='export JAVA_HOME\n'

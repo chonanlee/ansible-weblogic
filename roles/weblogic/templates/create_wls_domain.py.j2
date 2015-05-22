@@ -4,6 +4,7 @@ readTemplate("{{weblogic_home}}/wlserver/common/templates/wls/wls.jar")
 
 # Set the listen address and listen port for the Administration Server
 cd('Servers/AdminServer')
+
 set('ListenAddress','{{weblogic_console_host}}')
 set('ListenPort', {{weblogic_console_port}})
  
@@ -27,3 +28,4 @@ writeDomain('{{weblogic_home}}/user_projects/domains/{{domain_name}}')
 closeTemplate()
 
 exit()
+
