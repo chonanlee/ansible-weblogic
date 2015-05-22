@@ -18,11 +18,33 @@
   command: "{{java_home}}/bin/java -jar {{ansible_env.HOME}}/{{weblogic_install_jar}} -silent -responseFile {{ansible_env.HOME}}/install.file -invPtrLoc {{ansible_env.HOME}}/oraInst.loc -jreLoc {{java_home}}"
   when: not wls.stat.exists
 
-- name: weblogic domain create file
+- name: Clean up (weblogic install jar)
+  file: state=absent path={{ansible_env.HOME}}/{{weblogic_install_jar}}
+
+- name: Clean up (weblogic install file)
+  file: state=absent path={{ansible_env.HOME}}/install.file
+
+- name: Clean up (weblogic install loc)
+  file: state=absent path={{ansible_env.HOME}}/oraInst.loc
+
+- name: Check Domain Exists
+  stat: path={{weblogic_home}}/user_projects/domains/{{domain_name}}
+  register: dm
+
+- name: domain create python scripts
   template: src=create_wls_domain.py.j2 dest={{ansible_env.HOME}}/create_wls_domain.py owner=irm group=irm mode=0644
+  when: not dm.stat.exists
 
-- name: weblogic domain create file 2
+- name: domain create shell scripts
   template: src=create_wls_domain.sh.j2 dest={{ansible_env.HOME}}/create_wls_domain.sh owner=irm group=irm mode=0755
+  when: not dm.stat.exists
 
-- name: create domain
+- name: domain creation
   command: ./create_wls_domain.sh chdir={{ansible_env.HOME}}
+  when: not dm.stat.exists
+
+- name: Clean up (domain create python scripts)
+  file: state=absent path={{ansible_env.HOME}}/create_wls_domain.py
+
+- name: Clean up (domain create shell scripts)
+  file: state=absent path={{ansible_env.HOME}}/create_wls_domain.sh
