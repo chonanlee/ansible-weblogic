@@ -41,3 +41,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+roles/weblogic/files/fmw_12.1.3.0.0_wls.jar
+*.swp
+host_vars/192.168.120.199
+host_vars/192.168.120.203
+production
